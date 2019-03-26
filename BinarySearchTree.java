@@ -50,16 +50,136 @@ public class BinarySearchTree
         //go through tree and attach
         //the elements to its newfound parent
         //rootParent
-        this.attachElement(rootParent.right, toAdd);
+        this.attachElement(this.rootParent.right, toAdd);
         this.size++;
         
     }
 
+    /**
+     * Removes a node by its key
+     * @return removedNode
+     * @param 
+     */
     public Integer remove(String key) 
     {
-        return null;
+        //if there are no nodes present
+        if(this.size == 0)
+        {
+            return null;
+        }
+
+        //if such a node does not exist
+        if(this.lookUpElement(this.rootParent.right, key) == null)
+        {
+            return null;
+        }
+
+        //if the only node is the root and the keys are the same
+        if(this.size == 1 && this.rootParent.right.key.equals(key)) 
+        {
+            this.rootParent.right = null;
+            this.size--;
+        }
+
+        //otherwise
+        //find the node itself
+        Node toRemove = this.lookUpElement(this.rootParent.right, key);
+        Integer toRemoveValue = this.lookup(key);
+
+
+        // 1) if it is a leaf - no children
+        if(toRemove.left == null && toRemove.right == null)
+        {
+            //if this leaf is its parent's left child
+            if(toRemove.parent.left.key.equals(key))
+            {
+                toRemove.parent.left = null;
+            }
+
+            //otherwise
+            else
+            {
+                toRemove.parent.right = null;
+            }
+            this.size--;
+        }
+
+        // 2) if it has both children
+        else if(toRemove.left != null && toRemove.right != null)
+        {
+            String newKey;
+            Integer newValue;
+            //the right node has no left child
+            if(toRemove.right.left == null)
+            {
+                //sttoring the successor's pair data
+                newKey = toRemove.right.key;
+                newValue = toRemove.right.value;
+                //removing the successor
+                this.remove(newKey);
+            }
+
+            //otherwise
+            else
+            {
+                newKey = this.findSuccessor(toRemove.right).key;
+                newValue = this.findSuccessor(toRemove.right).value;
+                this.remove(newKey);
+            }
+
+            //assigning stored values to our "toRemove"
+            toRemove.key = newKey;
+            toRemove.value = newValue;
+
+            /**
+             * Note: do not decrement this.size in this case
+             * as it is done when remove is self-called
+             */
+        }
+
+        // 3)has only one child
+        //      -only left child
+        else if(toRemove.left != null)
+        {
+            toRemove.left.parent = toRemove.parent;
+            //if I am the left child of my parent
+            if (toRemove.parent.left.key.equals(key))
+            {
+                toRemove.parent.left = toRemove.left;
+            }
+            else
+            {
+                toRemove.parent.right = toRemove.left;
+            }
+            this.size--;
+        }
+
+        //      -only right child
+        else if(toRemove.right != null)
+        {
+            toRemove.right.parent = toRemove.parent;
+            //if I am the left child of my parent
+            if (toRemove.parent.left.key.equals(key))
+            {
+                toRemove.parent.left = toRemove.right;
+            }
+            else
+            {
+                toRemove.parent.right = toRemove.right;
+            }
+            this.size--;
+        }
+
+        //return the value of the removed node
+        return toRemoveValue;
     }
 
+    /**
+     * Goes through the tree
+     * and return a node by its key
+     * @return lookedUpNode
+     * @param
+     */
     public Integer lookup(String key) 
     {
         //if the size of the tree is 0
@@ -75,13 +195,13 @@ public class BinarySearchTree
         }
 
         //return null if no such key exists
-        if(lookUpElement(rootParent.right, key) == null)
+        if(lookUpElement(this.rootParent.right, key) == null)
         {
             return null;
         }
 
         //otherwise return the value of the looked up key
-        return lookUpElement(rootParent.right, key).value;
+        return lookUpElement(this.rootParent.right, key).value;
     }
 
     public void inOrderTraverse() {
@@ -133,6 +253,8 @@ public class BinarySearchTree
      * a helper method for LOOKUP
      * recursively walks through tree 
      * until finding the necessary element
+     * @return Node by its key
+     * @param
      */
 
      private Node lookUpElement(Node currentNode, String givenKey)
@@ -170,4 +292,16 @@ public class BinarySearchTree
             return this.lookUpElement(currentNode.right, givenKey);
         }
      }
+     /**
+      * finds the leftmost node 
+      * in the right subtree of a node
+      */
+    private Node findSuccessor(Node startNode) {
+        if(startNode.left == null)
+        {
+            return startNode;
+        }
+
+        return findSuccessor(startNode.left);
+    }
 }

@@ -18,7 +18,12 @@ public class Tester
         System.out.println(bst.rootParent.right.right.left.key);
         //System.out.println(bst.rootParent.right.right.right.key);
 
+        
         System.out.println("-----");
-        System.out.println(bst.lookup("m"));
+        System.out.println(bst.rootParent.right.key);        
+        System.out.println(bst.remove("j"));
+        System.out.println(bst.remove("k"));
+
+        System.out.println(bst.rootParent.right.key);
     }
 }
