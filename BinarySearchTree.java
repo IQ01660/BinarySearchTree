@@ -205,7 +205,10 @@ public class BinarySearchTree
     }
 
     public void inOrderTraverse() {
-
+        //starting looking up from the root
+        // and traversing the tree
+        // see Node.java for "inOrderTraverse()"
+        rootParent.right.inOrderTraverse();
     }
 
 

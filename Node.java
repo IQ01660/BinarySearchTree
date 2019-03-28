@@ -21,4 +21,23 @@ public class Node
         this.value = _value;
     }
 
+    public void inOrderTraverse() 
+    {
+        //check the left subtree
+        if(this.left != null)
+        {
+            this.left.inOrderTraverse();
+        }
+        
+        //print the node
+        System.out.println("(" + this.key + ", " + this.value + ")");
+
+        //check right subtree
+        if(this.right != null) 
+        {
+            this.right.inOrderTraverse();
+        }
+
+    }
+
 }
