@@ -77,8 +77,12 @@ public class BinarySearchTree
         //if the only node is the root and the keys are the same
         if(this.size == 1 && this.rootParent.right.key.equals(key)) 
         {
+            Integer toReturn = this.rootParent.right.value;
+
             this.rootParent.right = null;
             this.size--;
+
+            return toReturn;
         }
 
         //otherwise
@@ -143,7 +147,7 @@ public class BinarySearchTree
         {
             toRemove.left.parent = toRemove.parent;
             //if I am the left child of my parent
-            if (toRemove.parent.left.key.equals(key))
+            if (toRemove.parent.left != null && toRemove.parent.left.key.equals(key))
             {
                 toRemove.parent.left = toRemove.left;
             }
@@ -159,7 +163,7 @@ public class BinarySearchTree
         {
             toRemove.right.parent = toRemove.parent;
             //if I am the left child of my parent
-            if (toRemove.parent.left.key.equals(key))
+            if (toRemove.parent.left != null && toRemove.parent.left.key.equals(key))
             {
                 toRemove.parent.left = toRemove.right;
             }
@@ -208,7 +212,11 @@ public class BinarySearchTree
         //starting looking up from the root
         // and traversing the tree
         // see Node.java for "inOrderTraverse()"
-        rootParent.right.inOrderTraverse();
+
+        if (this.size != 0)
+        {
+            rootParent.right.inOrderTraverse();
+        }
     }
 
 
