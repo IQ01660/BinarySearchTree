@@ -42,17 +42,21 @@ public class BinarySearchTree
         }
 
         //if such a pair exists already
-        if (this.lookUpElement(this.rootParent.right, key) != null)
+        else if (this.lookUpElement(this.rootParent.right, key) != null)
         {
             this.lookUpElement(this.rootParent.right, key).value = value;
+            return;
         }
 
         //go through tree and attach
         //the elements to its newfound parent
         //rootParent
-        this.attachElement(this.rootParent.right, toAdd);
-        this.size++;
-        
+        else 
+        {
+            this.attachElement(this.rootParent.right, toAdd);
+            this.size++;
+            return;
+        }
     }
 
     /**
@@ -180,7 +184,7 @@ public class BinarySearchTree
 
     /**
      * Goes through the tree
-     * and return a node by its key
+     * and returns a node's value
      * @return lookedUpNode
      * @param
      */
